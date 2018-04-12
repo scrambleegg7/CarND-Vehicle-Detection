@@ -271,9 +271,9 @@ As visual confirmation, we understand that pixel range 0-300 on y-axis does not 
 
 ## 1.2 windows scaling size 
 
-Taking a look at the above grid image, some of cars are pictured with bigger size than grid cell, thus, support vector machine algorythm hardly detects exact car from splitted area. Eg. white car is splitted with at least 16 grid cells of 64x64 image block. Remeber that our training data comes from 64x64 full car image, which is none of partial body image, thus algo occationally fails to detect car. 
-Hence we changed the search window size to 128 like this. 
-As instructted in above section, I have provided 4 difffent size of croped windows.
+Taking a look at the above grid image, car is found on bigger size than defined grid cell, thus, support vector machine algorithm hardly detects exact car from splitted cropped area. Remeber that our training data comes from 64x64 full stacked car image blocks, which have none of partial body image (eg. door tire etc.), 
+Hence we have provided a variety of search windows to fit runnig car on test images (or video frames). 
+Here, I have provided 4 difffent size of croped windows as following;
 
 ```
     # extra large boxes
@@ -302,12 +302,12 @@ As instructted in above section, I have provided 4 difffent size of croped windo
 ![alt text][windows]
 
 Thus, object is searched from those different 4 type windows.
+With 75 to 300 pixels cropped area, sliding window will pickup running car so that support vector machine try to identify whether searched object is car or not. 
 
 ![alt text][gridseparate]
 
 
 ## 1.3 Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
-
 
 
 I have searched on scales using RGB 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. The left pane of the below images indicates `hotwindows` found by `single_img_features` function, so that multiple cyan color boxes are detected on test images. Right pane of image tables shows the result rectangle drawn by `add_heatmap` and  `apply_threshold` function. Finally the false positives are omitted with following function.
